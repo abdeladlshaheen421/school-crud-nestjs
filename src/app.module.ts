@@ -4,6 +4,7 @@ import { StudentsModule } from './students/students.module';
 import { DataSource } from 'typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Student } from './models/Student';
+import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     StudentsModule,
@@ -23,6 +24,7 @@ import { Student } from './models/Student';
         synchronize: configService.get('ENVIRONMENT') === 'dev' ? true : false,
       }),
     }),
+    AuthModule,
   ],
   controllers: [],
   providers: [],

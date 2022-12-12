@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Student } from 'src/models/Student';
 import { Repository } from 'typeorm';
-import {
-  createStudentDto,
-  queryParamsDto,
-  updateStudentDto,
-} from '../dto/student.dto';
+import { queryParamsDto } from '../dto/queryParam.dto';
+import { createStudentDto } from '../dto/createStudent.dto';
+import { updateStudentDto } from '../dto/updateStudent.dto';
+import { successMessageType } from '../interfaces/successMessage.interface';
+import { findAllStudentsType } from '../interfaces/findAllStudents.interface';
 
 @Injectable()
 export class Students {
@@ -16,7 +16,7 @@ export class Students {
   ) {}
 
   // C for add New Student to students Table
-  async create(studentData: createStudentDto): Promise<Object> {
+  async create(studentData: createStudentDto): Promise<successMessageType> {
     try {
       const newStudent = this.studentRepository.create({
         ...studentData,
@@ -28,7 +28,7 @@ export class Students {
     }
   }
   // R Find a specific student
-  async findById(id: number): Promise<Student> {
+  async findById(id: number): Promise<Student | null> {
     try {
       return await this.studentRepository.findOneBy({ id });
     } catch (error) {
@@ -36,7 +36,7 @@ export class Students {
     }
   }
   // R Find Students with Pagination
-  async findAll(query: queryParamsDto): Promise<Object> {
+  async findAll(query: queryParamsDto): Promise<findAllStudentsType> {
     try {
       let paginationObject = {};
       if (query?.page) paginationObject['skip'] = query.page * query.limit || 0;
@@ -51,7 +51,7 @@ export class Students {
   }
 
   // U update student data
-  async update(id: number, newData: updateStudentDto) {
+  async update(id: number, newData: updateStudentDto): Promise<Student | null> {
     try {
       await this.studentRepository.update(id, {
         ...newData,
@@ -61,8 +61,8 @@ export class Students {
       throw error;
     }
   }
-  // D delete a student
-  async remove(id: number): Promise<Object> {
+  // D delete a studenst
+  async remove(id: number): Promise<successMessageType> {
     try {
       await this.studentRepository.delete(id);
       return { message: 'Student is Removed SuccessFully' };

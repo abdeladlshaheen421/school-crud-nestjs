@@ -12,12 +12,10 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { Students } from '../services/students.service';
-import { Student } from '../students.interface';
-import {
-  createStudentDto,
-  queryParamsDto,
-  updateStudentDto,
-} from '../dto/student.dto';
+import { Student } from '../interfaces/students.interface';
+import { queryParamsDto } from '../dto/queryParam.dto';
+import { createStudentDto } from '../dto/createStudent.dto';
+import { updateStudentDto } from '../dto/updateStudent.dto';
 @Controller('students')
 export class StudentsController {
   constructor(private studentService: Students) {}
