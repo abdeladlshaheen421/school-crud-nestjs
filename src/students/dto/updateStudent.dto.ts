@@ -1,5 +1,12 @@
 import { Optional } from '@nestjs/common';
-import { IsAlpha, IsEmail, IsPhoneNumber, IsPositive } from 'class-validator';
+import {
+  IsAlpha,
+  IsEmail,
+  IsPhoneNumber,
+  IsPositive,
+  IsString,
+  MinLength,
+} from 'class-validator';
 export class updateStudentDto {
   @Optional()
   @IsAlpha()
@@ -16,4 +23,9 @@ export class updateStudentDto {
   @Optional()
   @IsPhoneNumber('EG')
   phone?: string;
+
+  @Optional()
+  @IsString()
+  @MinLength(8)
+  password: string;
 }

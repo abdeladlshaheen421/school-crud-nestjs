@@ -4,6 +4,8 @@ import {
   IsNotEmpty,
   IsPhoneNumber,
   IsPositive,
+  IsString,
+  MinLength,
 } from 'class-validator';
 export class createStudentDto {
   @IsAlpha()
@@ -21,4 +23,9 @@ export class createStudentDto {
   @IsNotEmpty()
   @IsPositive()
   age: number;
+
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(8)
+  password: string;
 }

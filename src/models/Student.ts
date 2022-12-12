@@ -15,4 +15,7 @@ export class Student {
 
   @Column()
   age: number;
+
+  @Column()
+  password: string;
 }

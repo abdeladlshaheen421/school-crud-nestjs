@@ -7,9 +7,11 @@ import { createStudentDto } from '../dto/createStudent.dto';
 import { updateStudentDto } from '../dto/updateStudent.dto';
 import { successMessageType } from '../interfaces/successMessage.interface';
 import { findAllStudentsType } from '../interfaces/findAllStudents.interface';
+import bcrypt from 'bcrypt';
+import { BCRYPT_PASSWORD, SALT_ROUNDS } from 'src/configration';
 
 @Injectable()
-export class Students {
+export class StudentService {
   constructor(
     @InjectRepository(Student)
     private studentRepository: Repository<Student>,
@@ -18,6 +20,10 @@ export class Students {
   // C for add New Student to students Table
   async create(studentData: createStudentDto): Promise<successMessageType> {
     try {
+      studentData.password = bcrypt.hashSync(
+        studentData.password + BCRYPT_PASSWORD,
+        SALT_ROUNDS,
+      );
       const newStudent = this.studentRepository.create({
         ...studentData,
       });
@@ -53,6 +59,11 @@ export class Students {
   // U update student data
   async update(id: number, newData: updateStudentDto): Promise<Student | null> {
     try {
+      if (newData.password)
+        newData.password = bcrypt.hashSync(
+          newData.password + BCRYPT_PASSWORD,
+          SALT_ROUNDS,
+        );
       await this.studentRepository.update(id, {
         ...newData,
       });
